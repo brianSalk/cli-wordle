@@ -55,7 +55,7 @@ if __name__ == '__main__':
         guesses.append(colored_guess)
         if (current_guess == answer or guess_count == GUESS_LIMIT):
             if current_guess == answer:
-                print(color_guess)
+                print(colored_guess)
                 print(f'CONGRATES!, you guessed correctly in {guess_count} tries')
             else:
                 print(f'the correct word was {answer}')
@@ -64,6 +64,7 @@ if __name__ == '__main__':
                 guess_count = 0
                 r = random.randint(0,len(words))
                 answer = words[r][:-1]
+                answer_count = Counter(answer)
                 guesses = []
             else:
                 print('goodby!')
