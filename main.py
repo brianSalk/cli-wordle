@@ -62,6 +62,7 @@ if __name__ == '__main__':
                 guess_count = 0
                 r = random.randint(0,len(words))
                 answer = words[r][:-1]
+                guesses = []
             else:
                 print('goodby!')
                 exit()
