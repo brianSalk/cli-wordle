@@ -5,8 +5,7 @@ from copy import copy
 from termcolor import colored
 def read_word(msg):
     while True:
-        for each in guesses:
-            print(each)
+        display_board(guesses)
         word = input(msg)
         word = word.upper().strip()
         if len(word) != 5:
@@ -35,6 +34,9 @@ def color_guess(guess, answer_count):
             colored_guess[i] = colored(letter, 'white')
     return "".join(colored_guess)
 
+def display_board(board):
+    for each in guesses:
+        print(each)
 
 if __name__ == '__main__':
     with open('words.txt') as f:
