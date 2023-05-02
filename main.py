@@ -7,21 +7,25 @@ from termcolor import colored
 from time import sleep
 import argparse
 def set_english():
+    WELCOME = 'Welcome to command-line wordle'
+    PRESS_ANY_KEY='press any key to continue'
     NOT_FIVE='not a five letter word'
     NOT_IN_MY_DICT='not a valid word'
     CORRECT='CONGRATES!, you guessed correctly in {guess_count} tries'
     INCORRECT='the correct word was {answer}'
     PLAY_AGAIN=f'play again?'
     GOODBY='goodby'
-    return NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'english'
+    return WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'english'
 def set_german():
+    WELCOME = 'Willkommen zu command-line Wordle'
+    PRESS_ANY_KEY='Drücken Sie eine beliebige Taste, um fortzufahren'
     NOT_FIVE='nich ein fünf buchstäbiges Wort'
     NOT_IN_MY_DICT='Das Wort kenne ich nicht'
     CORRECT='Richtig!  Das hat Ihnen {guess_count} Versuche gekostet.'
     INCORRECT='Die rightige Antwort war {answer}'
     PLAY_AGAIN=f'Wieder spielen? (j/N)'
     GOODBY='Tschuß!'
-    return NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'german'
+    return WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'german'
 def read_word():
     word_added = True
     while True:
@@ -84,9 +88,9 @@ args = parser.parse_args()
 if __name__ == '__main__':
     
     if args.user_language == 'english':
-        NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_english()
+        WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_english()
     elif args.user_language == 'german':
-        NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_german()
+        WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_german()
     with open(LANG) as f:
         words = f.readlines()
         r = random.randint(0,len(words)-1)
@@ -95,6 +99,12 @@ if __name__ == '__main__':
     answer_count = Counter(answer)
     guesses = []
     guess_count = 1
+    os.system('clear')
+    # print welcome message
+    print(colored(WELCOME,'blue').center(90))
+    print(colored(PRESS_ANY_KEY.upper(),'magenta').center(90))
+    input()
+    os.system('clear')
     while True:
         # del_Me
         current_guess = read_word()

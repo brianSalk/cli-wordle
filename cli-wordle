@@ -1,9 +1,11 @@
+WORDLE_DIR=$(dirname $0)
+ls
 if [[ $LANG =~ en ]] || [ ${LANG:-zzz} = 'zzz' ]
 then
-	python main.py english
+	python "${WORDLE_DIR}"/main.py english
 elif [[ $LANG =~ de ]]
 then
-	python main.py german
+	python "${WORDLE_DIR}"/main.py german
 fi
 
 
