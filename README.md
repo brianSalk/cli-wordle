@@ -1,4 +1,4 @@
-# wordpy
+# cli-wordle
 a commandline version of wordle written in python!
 ## how to play
 **1)** clone this repo  
