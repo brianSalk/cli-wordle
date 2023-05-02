@@ -69,7 +69,7 @@ def display_board(board, word_added):
         if len(guesses) > 0: 
             for letter in guesses[-1]:
                 sleep(.4)
-                print(letter,end="",flush=True)
+                print(letter, end="",flush=True)
             print()
     else:
         for each in guesses:
@@ -87,9 +87,9 @@ parser.add_argument('user_language')
 args = parser.parse_args()
 if __name__ == '__main__':
     
-    if args.user_language == 'english':
+    if args.user_language.endswith('english'):
         WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_english()
-    elif args.user_language == 'german':
+    elif args.user_language.endswith('german'):
         WELCOME,PRESS_ANY_KEY,NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_german()
     with open(LANG) as f:
         words = f.readlines()
