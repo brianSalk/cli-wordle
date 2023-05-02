@@ -1,19 +1,25 @@
 from sys import stderr, exit
 import random
+import os
 from collections import Counter
 from copy import copy
 from termcolor import colored
-def read_word(msg):
+from time import sleep
+def read_word():
+    word_added = True
     while True:
-        display_board(guesses)
-        word = input(msg)
+        display_board(guesses, word_added)
+        word = input()
         word = word.upper().strip()
         if len(word) != 5:
-            print(f'{word} is not a five letter word', file=stderr)
+            print(colored(f'not a five letter word', 'red'))
+            sleep(1.5)
         elif word + '\n' not in words:
-            print(f'{word} is not a valid word', file=stderr)
+            print(colored(f'not a valid word', 'red'))
+            sleep(1.5)
         else:
             return word
+        word_added = False
 
 def color_guess(guess, answer_count):
     colored_guess = list(guess)
@@ -32,11 +38,22 @@ def color_guess(guess, answer_count):
             counts[letter] -= 1
         else:
             colored_guess[i] = colored(letter, 'white')
-    return "".join(colored_guess)
+    return colored_guess
 
-def display_board(board):
-    for each in guesses:
-        print(each)
+def display_board(board, word_added):
+    os.system('clear')
+    if word_added:
+        for each in guesses[:-1]:
+            print("".join(each))
+        if len(guesses) > 0: 
+            for letter in guesses[-1]:
+                sleep(.4)
+                print(letter,end="",flush=True)
+            print()
+    else:
+        for each in guesses:
+            print("".join(each))
+
 
 if __name__ == '__main__':
     with open('words.txt') as f:
@@ -49,13 +66,12 @@ if __name__ == '__main__':
     guess_count = 1
     while True:
         # del_Me
-        msg = f'guess #{guess_count}: '
-        current_guess = read_word(msg)
+        current_guess = read_word()
         colored_guess = color_guess(current_guess, answer_count)
         guesses.append(colored_guess)
         if (current_guess == answer or guess_count == GUESS_LIMIT):
+            display_board(guesses, True)
             if current_guess == answer:
-                print(colored_guess)
                 print(f'CONGRATES!, you guessed correctly in {guess_count} tries')
             else:
                 print(f'the correct word was {answer}')
