@@ -1,10 +1,27 @@
-from sys import stderr, exit
+from sys import stderr, exit, argv
 import random
 import os
 from collections import Counter
 from copy import copy
 from termcolor import colored
 from time import sleep
+import argparse
+def set_english():
+    NOT_FIVE='not a five letter word'
+    NOT_IN_MY_DICT='not a valid word'
+    CORRECT='CONGRATES!, you guessed correctly in {guess_count} tries'
+    INCORRECT='the correct word was {answer}'
+    PLAY_AGAIN=f'play again?'
+    GOODBY='goodby'
+    return NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'english'
+def set_german():
+    NOT_FIVE='nich ein fünf buchstäbiges Wort'
+    NOT_IN_MY_DICT='Das Wort kenne ich nicht'
+    CORRECT='Richtig!  Das hat Ihnen {guess_count} Versuche gekostet.'
+    INCORRECT='Die rightige Antwort war {answer}'
+    PLAY_AGAIN=f'Wieder spielen? (j/N)'
+    GOODBY='Tschuß!'
+    return NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, 'german'
 def read_word():
     word_added = True
     while True:
@@ -12,10 +29,10 @@ def read_word():
         word = input()
         word = word.upper().strip()
         if len(word) != 5:
-            print(colored(f'not a five letter word', 'red'))
+            print(colored(NOT_FIVE, 'red'))
             sleep(1.5)
         elif word + '\n' not in words:
-            print(colored(f'not a valid word', 'red'))
+            print(colored(NOT_IN_MY_DICT, 'red'))
             sleep(1.5)
         else:
             return word
@@ -54,9 +71,23 @@ def display_board(board, word_added):
         for each in guesses:
             print("".join(each))
 
+def play_again(y_n):
+    if LANG == 'english' and y_n.strip().upper() == 'Y':
+        return True
+    elif LANG == 'german' and y_n.strip().upper() == 'J':
+        return True
 
+parser = argparse.ArgumentParser()
+parser.add_argument('user_language')
+
+args = parser.parse_args()
 if __name__ == '__main__':
-    with open('words.txt') as f:
+    
+    if args.user_language == 'english':
+        NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_english()
+    elif args.user_language == 'german':
+        NOT_FIVE, NOT_IN_MY_DICT, CORRECT, INCORRECT, PLAY_AGAIN, GOODBY, LANG = set_german()
+    with open(LANG) as f:
         words = f.readlines()
         r = random.randint(0,len(words)-1)
         answer = words[r][:-1]
@@ -72,18 +103,18 @@ if __name__ == '__main__':
         if (current_guess == answer or guess_count == GUESS_LIMIT):
             display_board(guesses, True)
             if current_guess == answer:
-                print(f'CONGRATES!, you guessed correctly in {guess_count} tries')
+                print(colored(CORRECT.format(guess_count=guess_count), 'green'))
             else:
-                print(f'the correct word was {answer}')
-            y_n = input('play again? (y/N)')
-            if y_n.strip().upper() == 'Y':
+                print(colored(INCORRECT.format(answer=answer), 'red'))
+            y_n = input(PLAY_AGAIN)
+            if play_again(y_n):
                 guess_count = 0
                 r = random.randint(0,len(words))
                 answer = words[r][:-1]
                 answer_count = Counter(answer)
                 guesses = []
             else:
-                print('goodby!')
+                print(GOODBY)
                 exit()
         guess_count+=1
     
