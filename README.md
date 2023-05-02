@@ -6,3 +6,7 @@ a commandline version of wordle written in python!
 ```
 chmod +x cli-wordle
 ```
+**3)** run:
+```
+./cli-wordle
+```
